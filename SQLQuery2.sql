@@ -1,33 +1,39 @@
--- FIRST TASK:
+-- FIRST TASK
 
-USE AdventureWorksLT2022;
+USE AdventureWorks2022;
 
-SELECT FirstName, LastName, CompanyName AS Company FROM SalesLT.Customer
-	ORDER BY LastName ASC;
+SELECT FirstName, LastName, BusinessEntityID AS Employee_id FROM Person.Person
+	ORDER BY LastName ASC
 
 -- SECOND TASK
 
-USE AdventureWorksLT2022;
+USE AdventureWorks2022;
 
-SELECT FirstName, LastName, AddressLine1 FROM SalesLT.Customer JOIN 
-	SalesLT.CustomerAddress ON Customer.CustomerID = CustomerAddress.CustomerID JOIN
-	SalesLT.[Address] ON SalesLT.CustomerAddress.AddressID = [Address].AddressID
-	WHERE SalesLT.Customer.LastName LIKE 'L%'
+SELECT Person.BusinessEntityID, FirstName, LastName, PhoneNumber FROM Person.PersonPhone JOIN 
+	Person.Person ON Person.BusinessEntityID = PersonPhone.BusinessEntityID
+	WHERE LastName LIKE 'L%'
 	ORDER BY LastName, FirstName
 
 -- THIRD TASK
 
-USE AdventureWorksLT2022;
+USE AdventureWorks2022;
 
-SELECT CountryRegion, StateProvince, COUNT(SalesLT.Customer.CustomerID) AS CustomersN FROM SalesLT.Customer JOIN 
-	SalesLT.CustomerAddress ON Customer.CustomerID = CustomerAddress.CustomerID JOIN
-	SalesLT.[Address] ON SalesLT.CustomerAddress.AddressID = [Address].AddressID
-	GROUP BY CountryRegion, StateProvince
-	ORDER BY StateProvince ASC
+--SELECT PostalCode, COUNT(Person.Person.LastName) AS NameNumber, COUNT(Sales.SalesPerson.SalesYTD) AS SalesNumber
+SELECT PostalCode, Person.Person.LastName, Sales.SalesPerson.SalesYTD
+	FROM Person.[Address] JOIN
+	Person.BusinessEntityAddress ON Person.[Address].AddressID = Person.BusinessEntityAddress.AddressID JOIN
+	Person.Person ON Person.BusinessEntityAddress.BusinessEntityID = Person.Person.BusinessEntityID JOIN
+	Sales.SalesPerson ON Person.BusinessEntityAddress.BusinessEntityID = Sales.SalesPerson.BusinessEntityID
+	WHERE TerritoryID IS NOT NULL AND SalesYTD > 0
+	GROUP BY PostalCode, LastName, SalesYTD
+	ORDER BY SalesYTD DESC, PostalCode ASC
 
 -- FOURTH TASK
 
-USE AdventureWorksLT2022;
+USE AdventureWorks2022;
 
-SELECT SalesOrderID, SUM(LineTotal) AS Total FROM SalesLT.SalesOrderDetail
+SELECT SalesOrderID,
+SUM(LineTotal) AS TotalCost 
+FROM Sales.SalesOrderDetail
 	GROUP BY SalesOrderID
+	HAVING SUM(LineTotal) > 100000
