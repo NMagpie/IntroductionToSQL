@@ -5,7 +5,7 @@ USE AuctionApp;
 CREATE TABLE Users (
 	ID INT PRIMARY KEY,
 	UserName NVARCHAR(32) NOT NULL UNIQUE,
-	Balance INT DEFAULT(0)
+	Balance MONEY DEFAULT(0)
 )
 
 CREATE TABLE Auctions (

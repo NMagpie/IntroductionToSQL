@@ -9,8 +9,8 @@ SELECT FirstName, LastName, BusinessEntityID AS Employee_id FROM Person.Person
 
 USE AdventureWorks2022;
 
-SELECT Person.BusinessEntityID, FirstName, LastName, PhoneNumber FROM Person.PersonPhone JOIN 
-	Person.Person ON Person.BusinessEntityID = PersonPhone.BusinessEntityID
+SELECT p.BusinessEntityID, FirstName, LastName, PhoneNumber FROM Person.PersonPhone ph
+	JOIN Person.Person p ON p.BusinessEntityID = ph.BusinessEntityID
 	WHERE LastName LIKE 'L%'
 	ORDER BY LastName, FirstName
 
@@ -19,13 +19,13 @@ SELECT Person.BusinessEntityID, FirstName, LastName, PhoneNumber FROM Person.Per
 USE AdventureWorks2022;
 
 --SELECT PostalCode, COUNT(Person.Person.LastName) AS NameNumber, COUNT(Sales.SalesPerson.SalesYTD) AS SalesNumber
-SELECT PostalCode, Person.Person.LastName, Sales.SalesPerson.SalesYTD
-	FROM Person.[Address] JOIN
-	Person.BusinessEntityAddress ON Person.[Address].AddressID = Person.BusinessEntityAddress.AddressID JOIN
-	Person.Person ON Person.BusinessEntityAddress.BusinessEntityID = Person.Person.BusinessEntityID JOIN
-	Sales.SalesPerson ON Person.BusinessEntityAddress.BusinessEntityID = Sales.SalesPerson.BusinessEntityID
+SELECT PostalCode, Person.Person.LastName, Sales.SalesPerson.SalesYTD, Count(*)
+	FROM Person.[Address] 
+	JOIN Person.BusinessEntityAddress ON Person.[Address].AddressID = Person.BusinessEntityAddress.AddressID 
+	JOIN Person.Person ON Person.BusinessEntityAddress.BusinessEntityID = Person.Person.BusinessEntityID 
+	JOIN Sales.SalesPerson ON Person.BusinessEntityAddress.BusinessEntityID = Sales.SalesPerson.BusinessEntityID
 	WHERE TerritoryID IS NOT NULL AND SalesYTD > 0
-	GROUP BY PostalCode, LastName, SalesYTD
+	GROUP BY PostalCode, LastName
 	ORDER BY SalesYTD DESC, PostalCode ASC
 
 -- FOURTH TASK
