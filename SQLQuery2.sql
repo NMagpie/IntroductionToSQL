@@ -19,7 +19,7 @@ SELECT p.BusinessEntityID, FirstName, LastName, PhoneNumber FROM Person.PersonPh
 USE AdventureWorks2022;
 
 --SELECT PostalCode, COUNT(Person.Person.LastName) AS NameNumber, COUNT(Sales.SalesPerson.SalesYTD) AS SalesNumber
-SELECT PostalCode, Person.Person.LastName, Sales.SalesPerson.SalesYTD, Count(*)
+SELECT PostalCode, Person.Person.LastName, Sales.SalesPerson.SalesYTD
 	FROM Person.[Address] 
 	JOIN Person.BusinessEntityAddress ON Person.[Address].AddressID = Person.BusinessEntityAddress.AddressID 
 	JOIN Person.Person ON Person.BusinessEntityAddress.BusinessEntityID = Person.Person.BusinessEntityID 

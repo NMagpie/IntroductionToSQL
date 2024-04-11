@@ -86,3 +86,18 @@ WHERE EXISTS (
 	SELECT * FROM [Sales].[Customer] AS C
 	WHERE C.StoreID = S.BusinessEntityID AND C.TerritoryID = 6
 );
+
+-- 6. NUMBER OF ADDRESSES BY TYPE (subquery)
+
+USE AdventureWorks2022;
+
+SELECT Person.AddressType.Name, COUNT(Person.BusinessEntityAddress.AddressTypeID) AS 'Number of Addresses'
+FROM Person.BusinessEntityAddress 
+RIGHT JOIN Person.AddressType ON Person.BusinessEntityAddress.AddressTypeID = Person.AddressType.AddressTypeID
+GROUP BY Person.AddressType.Name;
+
+SELECT [AT].Name, (
+	SELECT COUNT(*)
+	FROM [Person].[BusinessEntityAddress] AS BEA 
+	WHERE BEA.AddressTypeID = [AT].AddressTypeID
+) FROM [Person].[AddressType] AS [AT]
